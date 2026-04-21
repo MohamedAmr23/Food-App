@@ -13,6 +13,7 @@ import RecipeData from "../component/RecipeData.jsx";
 import UsersList from "../component/UsersList.jsx";
 import FavList from "../component/FavList.jsx";
 import VerifyAccount from "../Authentication/VerifyAccount.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -53,31 +54,31 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element:<ProtectedRoute><Dashboard /></ProtectedRoute>,
       },
       {
         path: '',
-        element: <Dashboard />,
+        element:<ProtectedRoute><Dashboard /></ProtectedRoute>,
       },
       {
         path: 'recipes',
-        element: <RecipesList />,
+        element: <ProtectedRoute><RecipesList /></ProtectedRoute>,
       },
       {
         path: 'recipe-data',
-        element: <RecipeData />,
+        element: <ProtectedRoute><RecipeData /></ProtectedRoute>,
       },
       {
         path: 'categories',
-        element: <CategoriesList />,
+        element: <ProtectedRoute><CategoriesList /></ProtectedRoute>,
       },
       {
         path: 'users',
-        element: <UsersList />,
+        element: <ProtectedRoute><UsersList /></ProtectedRoute>,
       },
       {
         path: 'favorites',
-        element: <FavList />,
+        element: <ProtectedRoute><FavList /></ProtectedRoute>,
       },
     ],
   },

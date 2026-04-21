@@ -33,6 +33,7 @@ const ForgetPassword = () => {
               type="email"
               {...register('email' , {required:'Email is required' , pattern:{value:/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/ , message:'Invalid email address'}}) }
               className="form-control bg-light border-start-0 ps-0 focus-none"
+              style={{paddingTop:"10px" , paddingBottom:"10px" , border:'none'}}
               placeholder="Enter your E-mail"
               aria-describedby='email'
             />

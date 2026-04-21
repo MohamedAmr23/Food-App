@@ -3,13 +3,12 @@ import Navbar from '../sharedComponent/Navbar'
 import { Outlet } from 'react-router-dom'
 import SideBar from '../sharedComponent/SideBar'
 import Header from '../sharedComponent/Header'
-
 const MasterLayout = () => {
   return (
     <div className="d-flex">
-      <SideBar />
+      <SideBar/>
       <div className='w-100'>
-        <Navbar />
+        <Navbar/>
         <Header/>
         <Outlet />
       </div>
