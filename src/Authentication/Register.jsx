@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import axiosClient from "../api/axiosClient";
+import { authApi } from "../api";
 
 const Register = () => {
   const {
@@ -15,29 +17,26 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const onSubmit = async (data) => {
-    const formData = new FormData();
-    formData.append("userName", data.userName);
-    formData.append("email", data.email);
-    formData.append("country", data.country);
-    formData.append("phoneNumber", data.phoneNumber);
-    formData.append("password", data.password);
-    formData.append("confirmPassword", data.confirmPassword);
+ const onSubmit = async (data) => {
+  try {
+    await authApi.Register({
+      userName: data.userName,
+      email: data.email,
+      country: data.country,
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+    });
 
-    try {
-      await axios.post(
-        "https://upskilling-egypt.com:3006/api/v1/Users/Register",
-        formData,
-      );
-      toast.success("Account created successfully! Please check your email.");
-      navigate("/verify-account");
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Registration failed. Please try again.",
-      );
-    }
-  };
+    toast.success("Account created successfully! Please check your email.");
+    navigate("/verify-account");
+  } catch (error) {
+    toast.error(
+      error.response.data.additionalInfo.errors.password[0] ||
+        "Registration failed. Please try again."
+    );
+  }
+};
 
   return (
     <div>

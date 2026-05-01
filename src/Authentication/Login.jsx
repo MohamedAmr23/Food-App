@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { UserContext } from '../context/UserContext'
-
+import { authApi } from '../api'
+import { jwtDecode } from "jwt-decode";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -13,7 +14,7 @@ const Login = () => {
   const {userToken , setUserToken} = useContext(UserContext)
   const onSubmit = async (data) => {
     try{
-      const response =await axios.post('https://upskilling-egypt.com:3006/api/v1/Users/Login',data)
+      const response =await authApi.Login(data)
       toast.success('Login successful!')
       localStorage.setItem('token', response.data.token)
       setUserToken(response.data.token)

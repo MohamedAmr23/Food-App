@@ -21,3 +21,22 @@
     box-shadow: none;
     outline: none;
 }
+
+.header-bg{
+    background-image: url(assets/header-bg-svg.svg);
+    background-size: cover;
+}
+.css-dip3t8{
+    background-color: #1F263E !important;
+    border-top-right-radius:50px;
+}
+.ps-menu-button{
+    transition: all 1s ease;
+}
+.ps-menu-button:hover{
+    background-color: #00924D1A !important ;
+    border-left: 3px solid #009247;
+}
+.css-1wvake5{
+    border: none !important;
+}
