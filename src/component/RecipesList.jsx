@@ -3,14 +3,14 @@ import HeaderCard from '../sharedComponent/HeaderCard'
 import headerRecipe from '../assets/header-recipe.png'
 import { recipesApi } from '../api'
 import NoData from './NoData'
-
+import noImage from '../assets/no-data.png'
 const RecipesList = () => {
   const [recipesList, setRecipesList] = useState([])
 
   const getRecipesList = async () => {
     try {
       const response = await recipesApi.getAllRecipes()
-      setRecipesList(response.data.data)  // ✅ data is nested inside response.data.data
+      setRecipesList(response.data.data) 
     } catch (error) {
       console.error('Error fetching recipes:', error)
     }
@@ -70,7 +70,7 @@ const RecipesList = () => {
                   <td>
                     {recipe.imagePath
                       ? <img src={recipe.imagePath} alt={recipe.name} style={{ width: 40, height: 40, borderRadius: 6, objectFit: 'cover' }} />
-                      : <span className='text-muted'>No image</span>
+                      : <img src={noImage} alt="No image" className='table-img' />
                     }
                   </td>
                   <td>{recipe.price}</td>
