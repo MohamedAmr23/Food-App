@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { UserContext } from '../context/UserContext'
 import { authApi } from '../api'
-import { jwtDecode } from "jwt-decode";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)

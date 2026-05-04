@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { useForm } from 'react-hook-form'
-import { recipesApi, categoriesApi } from '../api'
+import { recipesApi, categoriesApi, tagsApi } from '../api'
 import { toast } from 'react-toastify'
 
 const AddRecipeModal = ({ show, onClose, onSuccess, recipeToEdit = null }) => {
   const isEditMode = !!recipeToEdit
   const [categoriesList, setCategoriesList] = useState([])
+  const [tagsList, setTagsList] = useState([])             
   const [imagePreview, setImagePreview] = useState(null)
 
   const {
@@ -19,12 +20,17 @@ const AddRecipeModal = ({ show, onClose, onSuccess, recipeToEdit = null }) => {
     formState: { errors, isSubmitting }
   } = useForm()
 
+  
   const fetchDropdowns = async () => {
     try {
-      const categoriesRes = await categoriesApi.getAllCategories()
+      const [categoriesRes, tagsRes] = await Promise.all([
+        categoriesApi.getAllCategories(),
+        tagsApi.getTags()                                  
+      ])
       setCategoriesList(categoriesRes.data.data)
+      setTagsList(tagsRes.data)                            
     } catch (error) {
-      console.error('Error fetching categories:', error)
+      console.error('Error fetching dropdowns:', error)
     }
   }
 
@@ -180,26 +186,29 @@ const AddRecipeModal = ({ show, onClose, onSuccess, recipeToEdit = null }) => {
               </div>
             </div>
 
-            {/* ── Tag ── */}
+            {/* ── Tag dropdown ── */}
             <div className="col-md-6">
               <label className="form-label fw-semibold small text-uppercase text-muted" style={{ letterSpacing: '0.05em' }}>
-                Tag ID <span className="text-danger">*</span>
+                Tag <span className="text-danger">*</span>
               </label>
               <div className="input-group">
                 <span className="input-group-text bg-light border-end-0">
                   <i className="fa fa-tag text-muted small"></i>
                 </span>
-                <input
-                  type="number"
-                  placeholder="Tag ID"
-                  className={`form-control border-start-0 ps-0 ${errors.tagId ? 'is-invalid' : ''}`}
+                <select
+                  className={`form-select border-start-0 ${errors.tagId ? 'is-invalid' : ''}`}
                   {...register('tagId', { required: 'Tag is required' })}
-                />
+                >
+                  <option value="">-- Select Tag --</option>
+                  {tagsList.map(tag => (
+                    <option key={tag.id} value={tag.id}>{tag.name}</option>
+                  ))}
+                </select>
                 {errors.tagId && <div className="invalid-feedback">{errors.tagId.message}</div>}
               </div>
             </div>
 
-            {/* ── Category ── */}
+            {/* ── Category dropdown ── */}
             <div className="col-md-6">
               <label className="form-label fw-semibold small text-uppercase text-muted" style={{ letterSpacing: '0.05em' }}>
                 Category <span className="text-danger">*</span>
@@ -239,12 +248,9 @@ const AddRecipeModal = ({ show, onClose, onSuccess, recipeToEdit = null }) => {
             <div className="col-12">
               <label className="form-label fw-semibold small text-uppercase text-muted" style={{ letterSpacing: '0.05em' }}>
                 Recipe Image {!isEditMode && <span className="text-danger">*</span>}
-                {isEditMode && <span className="text-muted fw-normal normal-case ms-1">(leave empty to keep current)</span>}
+                {isEditMode && <span className="text-muted fw-normal ms-1 text-lowercase">(leave empty to keep current)</span>}
               </label>
-
-              {/* Preview + Upload side by side */}
               <div className="d-flex align-items-center gap-3">
-                {/* Image preview box */}
                 <div
                   className="rounded-3 bg-light border d-flex align-items-center justify-content-center overflow-hidden flex-shrink-0"
                   style={{ width: 80, height: 80 }}
@@ -254,8 +260,6 @@ const AddRecipeModal = ({ show, onClose, onSuccess, recipeToEdit = null }) => {
                     : <i className="fa fa-image text-muted fs-4"></i>
                   }
                 </div>
-
-                {/* File input */}
                 <div className="flex-grow-1">
                   <input
                     type="file"
@@ -281,11 +285,7 @@ const AddRecipeModal = ({ show, onClose, onSuccess, recipeToEdit = null }) => {
 
         {/* ── Footer ── */}
         <Modal.Footer className="border-0 px-4 pb-4 pt-0 d-flex gap-2">
-          <Button
-            variant="light"
-            onClick={handleClose}
-            className="fw-semibold px-4 border"
-          >
+          <Button variant="light" onClick={handleClose} className="fw-semibold px-4 border">
             Cancel
           </Button>
           <Button

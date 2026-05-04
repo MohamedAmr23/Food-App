@@ -65,7 +65,7 @@ const RecipesList = () => {
   return (
     <Fragment>
       
-          <HeaderCard
+        <HeaderCard
         title={'Recipes'} subtitle={'Item'}
         describtion1={'You can now add your items that any user can order '}
         describtion2={'it from the Application and you can edit'}
