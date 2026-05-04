@@ -14,6 +14,7 @@ import UsersList from "../component/UsersList.jsx";
 import FavList from "../component/FavList.jsx";
 import VerifyAccount from "../Authentication/VerifyAccount.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import ChangePassword from "../Authentication/ChangePassword.jsx";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ const router = createBrowserRouter([
       {
         path: 'favorites',
         element: <ProtectedRoute><FavList /></ProtectedRoute>,
+      },
+      {
+        path: "change-password",
+        element: <ProtectedRoute><ChangePassword /></ProtectedRoute>,
       },
     ],
   },
