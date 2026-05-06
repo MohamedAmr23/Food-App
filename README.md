@@ -6,7 +6,7 @@ A full-featured **React.js** admin dashboard for managing a food recipe applicat
 
 ## 🚀 Live Demo
 
-> Coming soon / Deploy link here
+> Coming soon
 
 ---
 
