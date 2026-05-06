@@ -15,7 +15,9 @@ A full-featured **React.js** admin dashboard for managing a food recipe applicat
 | Dashboard | Recipes | Users |
 |-----------|---------|-------|
 | <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/686d49dc-1248-4b48-8925-700129d32009" />
+| Recipes | 
  | <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/743879d7-a1b3-4a9c-b87f-d9767edf21dd" />
+ | Users |
  | <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a5ca60ce-323f-40fc-87bb-4e3958db174c" />
  |
 
