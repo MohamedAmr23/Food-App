@@ -1,14 +1,17 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { recipesApi } from '../api'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
+import { favApi, recipesApi } from '../api'
 import DeleteConfirmation from '../sharedComponent/DeleteConfirmation'
 import AddRecipeModal from './AddRecipeModal'
 import { toast } from 'react-toastify'
 import noImage from '../assets/no-data.png'
 import HeaderCard from '../sharedComponent/HeaderCard'
 import headerRecipe from '../assets/header-recipe.png'
+import { UserContext } from '../context/UserContext'
+
 const BASE_URL = 'https://upskilling-egypt.com:3006'
 
 const RecipesList = () => {
+  const {userData} = useContext(UserContext)
   const [recipesList, setRecipesList] = useState([])
   const [selectedRecipe, setSelectedRecipe] = useState(null)
   const [recipeToEdit, setRecipeToEdit] = useState(null)
@@ -23,6 +26,18 @@ const RecipesList = () => {
     }
   }
 
+const addToFav = async (id) => {
+  try {
+    await favApi.createFav({ recipeId: id })
+    toast.success('Recipe added to favorites ❤️')
+  } catch (error) {
+    if (error.response?.status === 409 || error.response?.status === 400) {
+      toast.warning('Already in favorites!')
+    } else {
+      toast.error('Failed to add to favorites')
+    }
+  }
+}
   const handleDeleteClick = (recipe) => setSelectedRecipe(recipe)
   const handleCloseDeleteModal = () => setSelectedRecipe(null)
 
@@ -78,12 +93,15 @@ const RecipesList = () => {
             <h2 className="fw-bold mb-1 fs-3">Recipes</h2>
             <p className="text-muted mb-0 small">Manage your menu items with ease</p>
           </div>
-          <button
-            className="btn btn-success d-flex align-items-center gap-2 px-4 py-2 fw-semibold"
-            onClick={() => setShowAddModal(true)}
-          >
-            <i className="fa fa-plus"></i> Add New Recipe
-          </button>
+           {userData?.userGroup === 'SuperAdmin' && (
+              <button
+                className="btn btn-success d-flex align-items-center gap-2 px-4 py-2 fw-semibold"
+                onClick={() => setShowAddModal(true)}
+              >
+                <i className="fa fa-plus"></i> Add New Recipe
+              </button>
+          )}
+          
         </div>
 
         {/* ── Stats Cards ── */}
@@ -222,22 +240,25 @@ const RecipesList = () => {
 
                         {/* Actions */}
                         <td>
-                          <div className="d-flex gap-2">
-                            <button
-                              className="btn btn-sm btn-warning bg-opacity-10 border-0 rounded-3"
-                              onClick={() => handleEditClick(recipe)}
-                              title="Edit"
-                            >
-                              <i className="fa fa-edit text-gray"></i>
-                            </button>
-                            <button
-                              className="btn btn-sm btn-danger bg-opacity-10 border-0 rounded-3"
-                              onClick={() => handleDeleteClick(recipe)}
-                              title="Delete"
-                            >
-                              <i className="fa fa-trash "></i>
-                            </button>
-                          </div>
+                           {userData?.userGroup === 'SuperAdmin'? (
+                            <div className="d-flex gap-2">
+                              <button
+                                className="btn btn-sm btn-warning bg-opacity-10 border-0 rounded-3"
+                                onClick={() => handleEditClick(recipe)}
+                                title="Edit"
+                              >
+                                <i className="fa fa-edit text-gray"></i>
+                              </button>
+                              <button
+                                className="btn btn-sm btn-danger bg-opacity-10 border-0 rounded-3"
+                                onClick={() => handleDeleteClick(recipe)}
+                                title="Delete"
+                              >
+                                <i className="fa fa-trash "></i>
+                              </button>
+                            </div>):
+                            <i onClick={()=>addToFav(recipe.id)} className="fa fa-heart text-danger mx-2"></i>}
+                          
                         </td>
 
                       </tr>

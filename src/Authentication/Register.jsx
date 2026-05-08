@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
-import axiosClient from "../api/axiosClient";
 import { authApi } from "../api";
 
 const Register = () => {
@@ -17,26 +15,29 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
- const onSubmit = async (data) => {
-  try {
-    await authApi.Register({
-      userName: data.userName,
-      email: data.email,
-      country: data.country,
-      phoneNumber: data.phoneNumber,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-    });
+  const onSubmit = async (data) => {
+    try {
+      await authApi.Register({
+        userName: data.userName,
+        email: data.email,
+        country: data.country,
+        phoneNumber: data.phoneNumber,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+      });
 
-    toast.success("Account created successfully! Please check your email.");
-    navigate("/verify-account");
-  } catch (error) {
-    toast.error(
-      error.response.data.additionalInfo.errors.password[0] ||
-        "Registration failed. Please try again."
-    );
-  }
-};
+      toast.success("Account created successfully! Please check your email.");
+      navigate("/verify-account");
+    } catch (error) {
+      // Safely dig into the nested error structure — any level could be undefined
+      const message =
+        error?.response?.data?.additionalInfo?.errors?.password?.[0] ||
+        error?.response?.data?.message ||
+        error?.message ||
+        "Registration failed. Please try again.";
+      toast.error(message);
+    }
+  };
 
   return (
     <div>
@@ -53,17 +54,13 @@ const Register = () => {
           <div style={{ width: "45%" }}>
             <div className="input-group">
               <span className="input-group-text bg-light border-end-0 line-right">
-                <i className="bi bi-phone" style={{ color: "#8391A1" }}></i>
+                <i className="bi bi-person" style={{ color: "#8391A1" }}></i>
               </span>
               <input
                 type="text"
                 {...register("userName", { required: "Username is required" })}
                 className="form-control bg-light border-start-0 ps-0 focus-none"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  border: "none",
-                }}
+                style={{ paddingTop: "10px", paddingBottom: "10px", border: "none" }}
                 placeholder="UserName"
               />
             </div>
@@ -78,7 +75,7 @@ const Register = () => {
           <div style={{ width: "45%" }}>
             <div className="input-group">
               <span className="input-group-text bg-light border-end-0 line-right">
-                <i className="bi bi-phone" style={{ color: "#8391A1" }}></i>
+                <i className="bi bi-envelope" style={{ color: "#8391A1" }}></i>
               </span>
               <input
                 type="email"
@@ -90,11 +87,7 @@ const Register = () => {
                   },
                 })}
                 className="form-control bg-light border-start-0 ps-0 focus-none"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  border: "none",
-                }}
+                style={{ paddingTop: "10px", paddingBottom: "10px", border: "none" }}
                 placeholder="Enter your E-mail"
               />
             </div>
@@ -109,17 +102,13 @@ const Register = () => {
           <div style={{ width: "45%" }}>
             <div className="input-group">
               <span className="input-group-text bg-light border-end-0 line-right">
-                <i className="bi bi-lock" style={{ color: "#8391A1" }}></i>
+                <i className="bi bi-globe" style={{ color: "#8391A1" }}></i>
               </span>
               <input
                 type="text"
                 {...register("country", { required: "Country is required" })}
                 className="form-control bg-light border-start-0 ps-0 focus-none"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  border: "none",
-                }}
+                style={{ paddingTop: "10px", paddingBottom: "10px", border: "none" }}
                 placeholder="Country"
               />
             </div>
@@ -146,11 +135,7 @@ const Register = () => {
                   },
                 })}
                 className="form-control bg-light border-start-0 ps-0 focus-none"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  border: "none",
-                }}
+                style={{ paddingTop: "10px", paddingBottom: "10px", border: "none" }}
                 placeholder="PhoneNumber"
               />
             </div>
@@ -177,11 +162,7 @@ const Register = () => {
                   },
                 })}
                 className="form-control bg-light border-start-0 ps-0 focus-none"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  border: "none",
-                }}
+                style={{ paddingTop: "10px", paddingBottom: "10px", border: "none" }}
                 placeholder="Password"
               />
               <span
@@ -206,7 +187,7 @@ const Register = () => {
           <div style={{ width: "45%" }}>
             <div className="input-group">
               <span className="input-group-text bg-light border-end-0 line-right">
-                <i className="bi bi-phone" style={{ color: "#8391A1" }}></i>
+                <i className="bi bi-lock" style={{ color: "#8391A1" }}></i>
               </span>
               <input
                 type={showConfirmPassword ? "text" : "password"}
@@ -216,11 +197,7 @@ const Register = () => {
                     value === watch("password") || "Passwords do not match",
                 })}
                 className="form-control bg-light border-start-0 ps-0 focus-none"
-                style={{
-                  paddingTop: "10px",
-                  paddingBottom: "10px",
-                  border: "none",
-                }}
+                style={{ paddingTop: "10px", paddingBottom: "10px", border: "none" }}
                 placeholder="Confirm Password"
               />
               <span
@@ -247,7 +224,7 @@ const Register = () => {
           <Link
             to="/login"
             className="fw-semibold text-decoration-none"
-            style={{ fontSize: "13px", color: "#4AA35A" }}
+            style={{ fontSize: "13px", color: "#009247" }}
           >
             Login Now?
           </Link>
@@ -256,13 +233,14 @@ const Register = () => {
         {/* Submit */}
         <button
           type="submit"
-          className="btn w-50 text-white  fw-semibold mt-3"
+          className="btn w-50 text-white fw-semibold mt-3"
           style={{
-            backgroundColor: "#4AA35A",
+            background: "linear-gradient(135deg, #009247 0%, #00c46a 100%)",
             borderRadius: "8px",
             padding: "10px",
             margin: "0 auto",
             display: "block",
+            border: "none",
           }}
         >
           Register
