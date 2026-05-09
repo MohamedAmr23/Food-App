@@ -6,7 +6,7 @@ A full-featured **React.js** admin dashboard for managing a food recipe applicat
 
 ## 🚀 Live Demo
 
-> Coming soon
+> https://food-app-red-two.vercel.app/
 
 ---
 
