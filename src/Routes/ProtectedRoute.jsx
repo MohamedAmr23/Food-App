@@ -5,6 +5,7 @@ import { Navigate } from 'react-router-dom'
 
 const ProtectedRoute = ({children}) => {
   const {userToken} = useContext(UserContext)
+
   if(localStorage.getItem('token') || userToken){
     return children
   }else{

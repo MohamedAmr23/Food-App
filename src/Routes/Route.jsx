@@ -9,13 +9,13 @@ import ResetPassword from "../Authentication/ResetPassword.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import RecipesList from "../component/RecipesList.jsx";
 import CategoriesList from "../component/CategoriesList.jsx";
-import RecipeData from "../component/RecipeData.jsx";
 import UsersList from "../component/UsersList.jsx";
 import FavList from "../component/FavList.jsx";
 import VerifyAccount from "../Authentication/VerifyAccount.jsx";
 import ProtectedRoute from "./ProtectedRoute.jsx";
 import ChangePassword from "../Authentication/ChangePassword.jsx";
 import Profile from "../component/Profile.jsx";
+import AdminOrUser from "../component/AdminOrUser.jsx";
 
 const router = createBrowserRouter([
   {
@@ -67,20 +67,16 @@ const router = createBrowserRouter([
         element: <ProtectedRoute><RecipesList /></ProtectedRoute>,
       },
       {
-        path: 'recipe-data',
-        element: <ProtectedRoute><RecipeData /></ProtectedRoute>,
-      },
-      {
         path: 'categories',
-        element: <ProtectedRoute><CategoriesList /></ProtectedRoute>,
+        element: <ProtectedRoute><AdminOrUser><CategoriesList /></AdminOrUser></ProtectedRoute>,
       },
       {
         path: 'users',
-        element: <ProtectedRoute><UsersList /></ProtectedRoute>,
+        element: <ProtectedRoute><AdminOrUser><UsersList /></AdminOrUser></ProtectedRoute>,
       },
       {
         path: 'favorites',
-        element: <ProtectedRoute><FavList /></ProtectedRoute>,
+        element: <ProtectedRoute><AdminOrUser><FavList /></AdminOrUser></ProtectedRoute>,
       },
       {
         path: "change-password",

@@ -93,15 +93,16 @@ const addToFav = async (id) => {
             <h2 className="fw-bold mb-1 fs-3">Recipes</h2>
             <p className="text-muted mb-0 small">Manage your menu items with ease</p>
           </div>
-           {userData?.userGroup === 'SuperAdmin' && (
-              <button
-                className="btn btn-success d-flex align-items-center gap-2 px-4 py-2 fw-semibold"
-                onClick={() => setShowAddModal(true)}
-              >
-                <i className="fa fa-plus"></i> Add New Recipe
-              </button>
+          {userData?.userGroup === 'SuperAdmin' && (
+            <button
+              className="btn btn-success d-flex align-items-center gap-2 fw-semibold px-3 px-md-4 py-2"
+              onClick={() => setShowAddModal(true)}
+            >
+              <i className="fa fa-plus"></i>
+              <span className="d-none d-md-inline">Add New Recipe</span>
+            </button>
           )}
-          
+                    
         </div>
 
         {/* ── Stats Cards ── */}

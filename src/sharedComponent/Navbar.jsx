@@ -3,16 +3,15 @@ import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
 import avatar from '../assets/avatar.png'
 
-const Navbar = () => {
+const Navbar = ({ isMobile, onMenuClick }) => {
   const { userData } = useContext(UserContext)
   const [searchTerm, setSearchTerm] = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(false)
-  const [notifications] = useState(3) 
+  const [notifications] = useState(3)
   const profileRef = useRef(null)
   const navigate = useNavigate()
 
-  
   useEffect(() => {
     const handler = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
@@ -47,6 +46,7 @@ const Navbar = () => {
       `}</style>
 
       <nav
+        className="px-5"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -60,8 +60,31 @@ const Navbar = () => {
           boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
         }}
       >
+
+        {/* ── Hamburger — mobile only ── */}
+        {isMobile && (
+          <button
+            onClick={onMenuClick}
+            style={{
+              background: 'none',
+              border: 'none',
+              borderRadius: 10,
+              width: 40, height: 40,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4b5563" strokeWidth="2.2">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+        )}
+
         {/* ── Search Bar ── */}
-        <div
+        <div 
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -76,7 +99,6 @@ const Navbar = () => {
             boxShadow: searchFocused ? '0 0 0 3px rgba(25,135,84,0.10)' : 'none',
           }}
         >
-          {/* Search icon */}
           <svg
             width="16" height="16" fill="none" viewBox="0 0 24 24"
             stroke={searchFocused ? '#198754' : '#adb5bd'} strokeWidth="2.2"
@@ -89,7 +111,7 @@ const Navbar = () => {
           <input
             className="navbar-search-input"
             type="text"
-            placeholder="Search recipes, categories, users..."
+            placeholder={isMobile ? "Search..." : "Search recipes, categories, users..."}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             onFocus={() => setSearchFocused(true)}
@@ -104,14 +126,11 @@ const Navbar = () => {
             }}
           />
 
-          {/* Clear button */}
           {searchTerm && (
             <button
               onClick={() => setSearchTerm('')}
               style={{
-                background: '#e9ecef',
-                border: 'none',
-                borderRadius: '50%',
+                background: '#e9ecef', border: 'none', borderRadius: '50%',
                 width: 20, height: 20,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 cursor: 'pointer', flexShrink: 0, padding: 0,
@@ -123,8 +142,7 @@ const Navbar = () => {
             </button>
           )}
 
-          {/* Keyboard shortcut hint */}
-          {!searchTerm && !searchFocused && (
+          {!searchTerm && !searchFocused && !isMobile && (
             <span style={{
               fontSize: '0.72rem', color: '#ced4da',
               background: '#f1f3f5', borderRadius: 4,
@@ -142,14 +160,10 @@ const Navbar = () => {
           <button
             className="notif-btn"
             style={{
-              position: 'relative',
-              background: 'none',
-              border: 'none',
-              borderRadius: 10,
-              width: 40, height: 40,
+              position: 'relative', background: 'none', border: 'none',
+              borderRadius: 10, width: 40, height: 40,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background 0.15s',
+              cursor: 'pointer', transition: 'background 0.15s',
             }}
           >
             <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#4b5563" strokeWidth="2">
@@ -170,19 +184,22 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* Divider */}
-          <div style={{ width: 1, height: 28, background: '#e9ecef', margin: '0 4px' }} />
+          {/* Divider — hidden on mobile */}
+          {!isMobile && (
+            <div style={{ width: 1, height: 28, background: '#e9ecef', margin: '0 4px' }} />
+          )}
 
           {/* Profile Dropdown */}
           <div ref={profileRef} style={{ position: 'relative' }}>
             <button
               onClick={() => setShowProfileMenu(prev => !prev)}
               style={{
-                display: 'flex', alignItems: 'center', gap: 10,
+                display: 'flex', alignItems: 'center', gap: isMobile ? 0 : 10,
                 background: showProfileMenu ? '#f8f9fa' : 'none',
                 border: '1px solid',
                 borderColor: showProfileMenu ? '#e9ecef' : 'transparent',
-                borderRadius: 10, padding: '5px 10px 5px 5px',
+                borderRadius: 10,
+                padding: isMobile ? '5px' : '5px 10px 5px 5px',
                 cursor: 'pointer', transition: 'all 0.15s',
               }}
             >
@@ -190,27 +207,30 @@ const Navbar = () => {
                 src={avatarSrc}
                 alt="Avatar"
                 style={{
-                  width: 34, height: 34,
-                  borderRadius: '50%',
-                  objectFit: 'cover',
-                  border: '2px solid #198754',
+                  width: 34, height: 34, borderRadius: '50%',
+                  objectFit: 'cover', border: '2px solid #198754',
                 }}
               />
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1a1a2e', lineHeight: 1.2 }}>
-                  {userData?.userName || 'User'}
+              {/* Hide name/role on mobile */}
+              {!isMobile && (
+                <div style={{ textAlign: 'left' }}>
+                  <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1a1a2e', lineHeight: 1.2 }}>
+                    {userData?.userName || 'User'}
+                  </div>
+                  <div style={{ fontSize: '0.72rem', color: '#9198a1', lineHeight: 1.2 }}>
+                    {userData?.userGroup || ''}
+                  </div>
                 </div>
-                <div style={{ fontSize: '0.72rem', color: '#9198a1', lineHeight: 1.2 }}>
-                  {userData?.userGroup || ''}
-                </div>
-              </div>
-              <svg
-                width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="#9198a1" strokeWidth="2.5"
-                style={{ transform: showProfileMenu ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+              )}
+              {!isMobile && (
+                <svg
+                  width="14" height="14" viewBox="0 0 24 24" fill="none"
+                  stroke="#9198a1" strokeWidth="2.5"
+                  style={{ transform: showProfileMenu ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}
+                >
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              )}
             </button>
 
             {/* Dropdown */}
@@ -224,7 +244,6 @@ const Navbar = () => {
                   minWidth: 200, overflow: 'hidden', zIndex: 200,
                 }}
               >
-                {/* User Info Header */}
                 <div style={{ padding: '14px 16px', borderBottom: '1px solid #f0f2f5' }}>
                   <div style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1a1a2e' }}>
                     {userData?.userName}
@@ -234,7 +253,6 @@ const Navbar = () => {
                   </div>
                 </div>
 
-                {/* Menu Items */}
                 {[
                   { icon: 'fa-user', label: 'My Profile', action: () => navigate('/dashboard/profile') },
                   { icon: 'fa-key', label: 'Change Password', action: () => navigate('/dashboard/change-password') },
@@ -258,7 +276,6 @@ const Navbar = () => {
 
                 <div style={{ height: 1, background: '#f0f2f5', margin: '4px 0' }} />
 
-                {/* Logout */}
                 <button
                   className="profile-menu-item"
                   onClick={logOut}

@@ -35,7 +35,7 @@ const ChangePassword = ({ asModal = false, onClose }) => {
   }
 
   const formContent = (
-    <div className="bg-white rounded-4 shadow px-5 py-4">
+    <div className="bg-white rounded-4 shadow px-5 py-4" >
 
       
       <div className="text-center mb-3">

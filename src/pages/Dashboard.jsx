@@ -80,8 +80,8 @@ const Dashboard = () => {
         describtion2="you can now see the options"
         image={headerImg}
       />
-      {userData?.userGroup === "SuperAdmin" && (
-        <div className="container-fluid px-4 py-4">
+            {userData?.userGroup === "SuperAdmin" && (
+        <div className="container-fluid px-5 py-4">
           <div className="row g-3 mb-4">
             {[
               {
@@ -284,6 +284,7 @@ const Dashboard = () => {
           </div>
         </div>
       )}
+     
     </>
   );
 };

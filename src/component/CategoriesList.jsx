@@ -71,7 +71,7 @@ const CategoriesList = () => {
             className="btn btn-success d-flex align-items-center gap-2 px-4 py-2 fw-semibold"
             onClick={() => setShowAddModal(true)}
           >
-            <i className="fa fa-plus"></i> Add New Category
+            <i className="fa fa-plus"></i><span className="d-none d-md-inline">Add New Category</span> 
           </button>
         </div>
 
