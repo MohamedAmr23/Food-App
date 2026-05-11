@@ -147,7 +147,7 @@ src/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/food-recipe-dashboard.git
+git clone https://github.com/MohamedAmr23//Food-App.git
 
 # 2. Navigate into the project
 cd food-recipe-dashboard
